@@ -20,6 +20,24 @@
 <div class="container" align="center">
     <h2 style="color: royalblue">PLAYER LIST</h2>
 </div>
+
+<div class="container" style="padding-left: 60%">
+    <form th:action="@{/player}" method="get" th:object="${player}">
+        <div>
+            <div>
+                <p>Từ</p>
+                <input type="date" th:value="${dayStart}" name="dayStart">
+            </div>
+            <div>
+                <p>đến</p>
+                <input type="date" th:value="${dayEnd}" name="dayEnd">
+            </div>
+            <input type="text" th:value="${nameSearch}" name="nameSearch">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+</div>
+
 <div class="container">
     <table class="table table-bordered">
         <tr>
@@ -32,7 +50,7 @@
             <th>AVATAR</th>
             <th>ACTION</th>
         </tr>
-        <tr th:each="player,status:${playerList}">
+        <tr th:each="player,status:${playerPage}">
             <td style="width: 12%" th:text="${status.count}"></td>
             <td style="width: 12%" th:text="${player.codePlayer}"></td>
             <td style="width: 12%" th:text="${player.name}"></td>
@@ -65,6 +83,17 @@
             </td>
         </tr>
     </table>
+    <a th:if="${playerPage.hasPrevious()}"
+       th:href="@{/player(page=${playerPage.number - 1},searchName=${nameSearch},size=${size},dayStart=${dayStart},dayEnd=${dayEnd})}">Trước</a>
+    <span th:text="${playerPage.number +1}"></span>/<span th:text="${playerPage.totalPages}"></span>
+    <a th:if="${playerPage.hasNext()}"
+       th:href="@{/player(page=${playerPage.number + 1},searchName=${nameSearch},size=${size},dayStart=${dayStart},dayEnd=${dayEnd})}">Sau</a>
+</div>
+<div>
+    <form th:action="@{/player}" method="get">
+        <input type="text" th:value="${size}" name="size">
+        <button type="submit">size</button>
+    </form>
 </div>
 <div class="container" align="center" style="color: royalblue">
     <h2 th:if="${msg}" th:text="${msg}"></h2>

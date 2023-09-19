@@ -1,6 +1,7 @@
 package com.example.bai1.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Player {
@@ -9,6 +10,7 @@ public class Player {
     private int id;
     private String codePlayer;
     private String name;
+    @Column(columnDefinition = "DATE")
     private String birthDay;
     private String exp;
     private String picture;
@@ -30,6 +32,7 @@ public class Player {
         this.position = position;
         this.status = status;
     }
+
 
     public int getId() {
         return id;
@@ -94,4 +97,5 @@ public class Player {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
 }

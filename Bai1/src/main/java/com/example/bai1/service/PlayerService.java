@@ -3,6 +3,8 @@ package com.example.bai1.service;
 import com.example.bai1.model.Player;
 import com.example.bai1.repository.IPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +13,10 @@ import java.util.List;
 public class PlayerService implements IPlayerService{
     @Autowired
     private IPlayerRepository playerRepository;
-    @Override
-    public List<Player> findAll() {
-        return playerRepository.findAllPlayer();
-    }
+//    @Override
+//    public List<Player> findAll() {
+//        return playerRepository.findAllPlayer();
+//    }
 
     @Override
     public Player findId(int id) {
@@ -34,5 +36,10 @@ public class PlayerService implements IPlayerService{
     @Override
     public void saveEdit(int id, Player player) {
         playerRepository.save(player);
+    }
+
+    @Override
+    public Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd) {
+        return playerRepository.findPlayerByNameContaining(pageable,"%"+ nameSearch +"%",dayStart,dayEnd);
     }
 }

@@ -4,13 +4,20 @@ import com.example.bai1.model.Player;
 import com.example.bai1.model.Position;
 import com.example.bai1.service.IPlayerService;
 import com.example.bai1.service.IPositionService;
+import com.sun.javafx.collections.ImmutableObservableList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/player")
@@ -20,11 +27,32 @@ public class PlayerController {
     @Autowired
     private IPositionService positionService;
 
+//    @GetMapping("")
+//    public String showList(Model model){
+//        List<Player> playerList = playerService.findAll();
+//        model.addAttribute("playerList",playerList);
+//        return "/list";
+//    }
     @GetMapping("")
-    public String showList(Model model){
-        List<Player> playerList = playerService.findAll();
-        model.addAttribute("playerList",playerList);
-        return "/list";
+    public String showList(@RequestParam(defaultValue = "0",required = false)int page,
+                           @RequestParam(defaultValue = "") String nameSearch,
+                           @RequestParam(defaultValue = "3",required = false) int size,
+                           @RequestParam(defaultValue = "1990-01-01",required = false) String dayStart,
+                           @RequestParam(defaultValue = "",required = false) String dayEnd,
+                           @ModelAttribute Player player,
+                           Model model){
+        if (Objects.equals(dayEnd,"")){
+            dayEnd = String.valueOf(LocalDate.now());
+        }
+        Pageable pageable = PageRequest.of(page,size, Sort.by("name").ascending());
+        Page <Player> playerPage = playerService.searchByName(pageable,nameSearch,dayStart,dayEnd);
+        model.addAttribute("playerPage",playerPage);
+        model.addAttribute("nameSearch",nameSearch);
+        model.addAttribute("size",size);
+        model.addAttribute("dayStart",dayStart);
+        model.addAttribute("dayEnd",dayEnd);
+        model.addAttribute("player",player);
+        return "list";
     }
     @GetMapping("/delete")
     public String deletePlayer(@RequestParam int id, RedirectAttributes redirectAttributes){
