@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 </head>
 <body>
+<div th:replace="landing_page::header">
+</div>
 <div>
     <form th:action="@{/player/create}" th:method="get">
         <button title="Thêm mới"
@@ -91,6 +93,8 @@
 
         </div>
     </div>
+</div>
+<div th:replace="landing_page::footer">
 </div>
 </body>
 <script>
