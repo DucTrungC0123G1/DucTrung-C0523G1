@@ -21,6 +21,6 @@ public interface IPlayerRepository extends JpaRepository<Player,Integer> {
     @Query(value = "update player set player.status = 0 where player.id = :id",nativeQuery = true)
     void deletePlayer(@Param("id") Player player);
 
-    @Query(value = "select * from player where birth_day > :dayStart and birth_day < :dayEnd and name like :nameSearch",nativeQuery = true)
+    @Query(value = "select * from player where birth_day > :dayStart and birth_day < :dayEnd and name like :nameSearch and player.status = true",nativeQuery = true)
     Page<Player> findPlayerByNameContaining(Pageable pageable,@Param("nameSearch") String nameSearch,@Param("dayStart") String dayStart,@Param("dayEnd") String dayEnd);
 }

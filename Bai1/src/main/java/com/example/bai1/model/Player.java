@@ -18,6 +18,9 @@ public class Player {
     @ManyToOne
     @JoinColumn(name = "position_id",referencedColumnName = "id")
     private Position position;
+    @ManyToOne
+    @JoinColumn(name = "team_id",referencedColumnName = "id")
+    private Team team;
 
     public Player() {
     }
@@ -33,6 +36,17 @@ public class Player {
         this.status = status;
     }
 
+    public Player(int id, String codePlayer, String name, String birthDay, String exp, String picture, boolean status, Position position, Team team) {
+        this.id = id;
+        this.codePlayer = codePlayer;
+        this.name = name;
+        this.birthDay = birthDay;
+        this.exp = exp;
+        this.picture = picture;
+        this.status = status;
+        this.position = position;
+        this.team = team;
+    }
 
     public int getId() {
         return id;
@@ -98,4 +112,11 @@ public class Player {
         this.status = status;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }

@@ -7,7 +7,9 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 </head>
-<body>
+<body style="background-image: url('https://img5.thuthuatphanmem.vn/uploads/2021/07/09/hinh-nen-san-van-dong-cup-c1_025305307.jpg');  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover">
 <div th:replace="landing_page::header">
 </div>
 <div class="back" style="margin-top: 30px">
@@ -29,6 +31,7 @@
                         <p class="card-text" th:text="${player.position.position}"></p><br/>
                         <p class="card-text" th:text="${player.exp}"></p><br/>
                         <p class="card-text" th:text="${player.birthDay}"></p><br/>
+                        <p class="card-text" th:text="${player.team.name}"></p><br/>
                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                     </div>
                 </div>
