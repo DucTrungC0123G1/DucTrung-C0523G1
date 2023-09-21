@@ -10,7 +10,7 @@ public class Team {
     private int id;
     private String name;
     @OneToMany(mappedBy = "team")
-    Set<Player> playerSet;
+    private Set<Player> playerSet;
 
     public Team() {
     }

@@ -8,16 +8,16 @@ public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String Position;
+    private String position;
     @OneToMany(mappedBy = "position")
-    Set<Player> playerSet;
+    private Set<Player> playerSet;
 
     public Position() {
     }
 
     public Position(int id, String position, Set<Player> playerSet) {
         this.id = id;
-        Position = position;
+        this.position = position;
         this.playerSet = playerSet;
     }
 
@@ -30,11 +30,11 @@ public class Position {
     }
 
     public String getPosition() {
-        return Position;
+        return position;
     }
 
     public void setPosition(String position) {
-        Position = position;
+        this.position = position;
     }
 
     public Set<Player> getPlayerSet() {

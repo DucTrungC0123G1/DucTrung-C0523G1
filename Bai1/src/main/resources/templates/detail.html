@@ -22,18 +22,17 @@
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img th:src="${player.picture}"  class="img-fluid rounded-start" alt="...">
+                    <img th:src="${player.picture}" class="img-fluid rounded-start" alt="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h3 class="card-title">Player Information</h3>
                         <p class="card-text" th:text="${player.name}"></p></div>
-                        <p class="card-text" th:text="${player.position.position}"></p><br/>
-                        <p class="card-text" th:text="${player.exp}"></p><br/>
-                        <p class="card-text" th:text="${player.birthDay}"></p><br/>
-                        <p class="card-text" th:text="${player.team.name}"></p><br/>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
+                    <p class="card-text" th:text="${player.position.position}"></p><br/>
+                    <p class="card-text" th:text="${player.exp}"></p><br/>
+                    <p class="card-text" th:text="${player.birthDay}"></p><br/>
+                    <p class="card-text" th:text="${player.team.name}"></p><br/>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                 </div>
             </div>
         </div>

@@ -42,25 +42,32 @@ public class PlayerController {
 //        model.addAttribute("playerList",playerList);
 //        return "/list";
 //    }
+    @ModelAttribute("teamList")
+    public List<Team> teamList(){
+       return teamService.findAll();
+    }
+
     @GetMapping("")
     public String showList(@RequestParam(defaultValue = "0", required = false) int page,
                            @RequestParam(defaultValue = "") String nameSearch,
                            @RequestParam(defaultValue = "2", required = false) int size,
                            @RequestParam(defaultValue = "1990-01-01", required = false) String dayStart,
                            @RequestParam(defaultValue = "", required = false) String dayEnd,
+                           @RequestParam(defaultValue = "",required = false) String teamSearch,
                            @ModelAttribute Player player,
                            Model model) {
         if (Objects.equals(dayEnd, "")) {
             dayEnd = String.valueOf(LocalDate.now());
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
-        Page<Player> playerPage = playerService.searchByName(pageable, nameSearch, dayStart, dayEnd);
+        Page<Player> playerPage = playerService.searchByName(pageable, nameSearch, dayStart, dayEnd, teamSearch);
         model.addAttribute("playerPage", playerPage);
         model.addAttribute("nameSearch", nameSearch);
         model.addAttribute("size", size);
         model.addAttribute("dayStart", dayStart);
         model.addAttribute("dayEnd", dayEnd);
         model.addAttribute("player", player);
+        model.addAttribute("teamSearch",teamSearch);
         return "list";
     }
 

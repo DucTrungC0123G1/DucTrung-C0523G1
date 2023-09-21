@@ -40,7 +40,7 @@ public class PlayerService implements IPlayerService{
     }
 
     @Override
-    public Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd) {
-        return playerRepository.findPlayerByNameContaining(pageable,"%"+ nameSearch +"%",dayStart,dayEnd);
+    public Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd, String teamSearch) {
+        return playerRepository.findPlayerByNameContaining(pageable,"%"+ nameSearch +"%",dayStart,dayEnd,"%" +teamSearch+ "%");
     }
 }

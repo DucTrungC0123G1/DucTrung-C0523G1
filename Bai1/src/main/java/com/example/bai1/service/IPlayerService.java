@@ -18,5 +18,5 @@ public interface IPlayerService {
 
     void saveEdit(int id, Player player);
 
-    Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd);
+    Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd, String teamSearch);
 }

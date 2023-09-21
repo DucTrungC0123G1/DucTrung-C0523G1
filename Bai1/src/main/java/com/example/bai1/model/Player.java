@@ -1,7 +1,6 @@
 package com.example.bai1.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 public class Player {
@@ -15,6 +14,7 @@ public class Player {
     private String exp;
     private String picture;
     private boolean status;
+    private boolean action;
     @ManyToOne
     @JoinColumn(name = "position_id",referencedColumnName = "id")
     private Position position;
@@ -46,6 +46,20 @@ public class Player {
         this.status = status;
         this.position = position;
         this.team = team;
+    }
+
+    public Player(int id, String codePlayer, String name, String birthDay, String exp, String picture, boolean status, boolean action, Position position, Team team) {
+        this.id = id;
+        this.codePlayer = codePlayer;
+        this.name = name;
+        this.birthDay = birthDay;
+        this.exp = exp;
+        this.picture = picture;
+        this.status = status;
+        this.action = action;
+        this.position = position;
+        this.team = team;
+
     }
 
     public int getId() {
@@ -118,5 +132,13 @@ public class Player {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
     }
 }
