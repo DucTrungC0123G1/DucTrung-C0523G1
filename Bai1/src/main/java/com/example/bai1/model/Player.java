@@ -8,6 +8,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String codePlayer;
+    @Column(unique = true)
     private String name;
     @Column(columnDefinition = "DATE")
     private String birthDay;

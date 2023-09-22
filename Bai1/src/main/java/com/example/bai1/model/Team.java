@@ -8,6 +8,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
     private String name;
     @OneToMany(mappedBy = "team")
     private Set<Player> playerSet;
