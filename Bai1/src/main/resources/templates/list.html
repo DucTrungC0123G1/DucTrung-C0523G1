@@ -6,6 +6,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <style>
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body style="background-image: url('https://coolwallpapers.me/picsup/5830458-uefa-champions-league-wallpapers.jpg');  background-repeat: no-repeat;
   background-attachment: fixed;
@@ -34,10 +43,11 @@
                 <input type="date" class="form-control" th:value="${dayEnd}" name="dayEnd">
             </div>
             <div>
-                <select class="custom-select border-0 px-2" th:field="*{team}">
-                    <th:block th:each="team:${teamList}">
-                        <option th:value="${team.id}" th:text="${team.name}"></option>
-                    </th:block>
+                <select class="custom-select border-0 px-2" name="teamSearch" th:value="${teamSearch}">
+                    <option value="">Select Team</option>
+                    <option th:each="t:${teamList}"
+                            th:selected="${t.name}==${teamSearch}"
+                            th:value="${t.name}" th:text="${t.name}"></option>
                 </select>
             </div>
             <div class="input-group mb-3">
@@ -62,24 +72,38 @@
             <th>POSITION</th>
             <th>TEAM</th>
             <th>STATUS</th>
+            <th>CHECK</th>
             <th>AVATAR</th>
             <th>ACTION</th>
         </tr>
         <tr th:each="player,status:${playerPage}">
             <td style="width: 10%" th:text="${status.count}"></td>
-            <td style="width: 10%" th:text="${player.codePlayer}"></td>
-            <td style="width: 10%" th:text="${player.name}"></td>
-            <td style="width: 10%" th:text="${player.birthDay}"></td>
-            <td style="width: 10%" th:text="${player.exp}"></td>
-            <td style="width: 10%" th:text="${player.position.position}"></td>
-            <td style="width: 10%" th:text="${player.team.name}"></td>
-            <td style="width: 10%" th:switch="${player.action}">
+            <td style="width: 10%" th:text="${player.getCodePlayer()}"></td>
+            <td style="width: 10%" th:text="${player.getName()}"></td>
+            <td style="width: 10%" th:text="${player.getBirthDay()}"></td>
+            <td style="width: 10%" th:text="${player.getExp()}"></td>
+            <td style="width: 10%" th:text="${player.getPosition()}"></td>
+            <td style="width: 10%" th:text="${player.getTeam()}"></td>
+            <td style="width: 10%" th:switch="${player.isAction()}">
                 <span th:case="false">Active</span>
                 <span th:case="true">Reserve</span>
             </td>
+            <td style="width: 10%">
+                <a th:href="@{player/active(id=${player.getId()})}">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-user-check"></i>
+                    </button>
+                </a>
+                <a th:href="@{player/reserve(id=${player.getId()})}">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-user-alt-slash"></i>
+                    </button>
+                </a>
+
+            </td>
             <td style="width: 12%">
                 <div class="container">
-                    <img th:src="${player.picture}" style="width: 100%;height: 70px">
+                    <img th:src="${player.getPicture()}" style="width: 100%;height: 70px">
                 </div>
             </td>
             <td style="width: 12%">
@@ -115,9 +139,23 @@
         <button type="submit" class="btn btn-primary">size</button>
     </form>
 </div>
-<div class="container" align="center" style="color: royalblue">
-    <h2 th:if="${msg}" th:text="${msg}"></h2>
+<!-------------------------Toast-------------------------------------------------------------->
+<div class="toast-container">
+    <div style="border-radius: 20%;border:2px solid #17a2b8;" id="liveToast" class="toast" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div style="background-color: #00394f;border-radius: 22%;border-top-color:#17a2b8;border: 2px "
+             class="toast-header justify-content-center">
+            <h4 style="color: white;text-align: center">
+                Thông báo
+            </h4>
+        </div>
+        <div class="toast-body text-info justify-content-center" style="align-content: center">
+            <p style="text-align: center" th:text="${msg}">
+            </p>
+        </div>
+    </div>
 </div>
+<!-------------------------End Toast-------------------------------------------------------------->
 
 <!-- Modal xóa-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -139,13 +177,21 @@
                     <button type="submit" class="btn btn-primary">Delete</button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
+
 <div th:replace="landing_page::footer">
 </div>
 </body>
+<script th:if="${msg!=null}">
+    // toast
+    window.onload = function () {
+        let myAlert = document.getElementById('liveToast');//select id of toast
+        let bsAlert = new bootstrap.Toast(myAlert);//inizialize it
+        bsAlert.show();//show it
+    }
+</script>
 <script>
     //delete modal
     function confirmDelete(name, id) {

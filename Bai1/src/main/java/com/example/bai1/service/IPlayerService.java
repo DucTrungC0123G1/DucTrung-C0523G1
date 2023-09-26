@@ -1,7 +1,9 @@
 package com.example.bai1.service;
 
+import com.example.bai1.dto.IPlayerDto;
 import com.example.bai1.dto.PlayerDto;
 import com.example.bai1.model.Player;
+import com.example.bai1.model.Team;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,5 +20,12 @@ public interface IPlayerService {
 
     void saveEdit(int id, Player player);
 
-    Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd, String teamSearch);
+    Page<IPlayerDto> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd, String teamSearch);
+
+    void active(Player player);
+
+    void reserve(Player player);
+
+
+    List<Player> checkLimitPlayer(int id);
 }

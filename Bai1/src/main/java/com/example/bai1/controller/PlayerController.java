@@ -1,5 +1,6 @@
 package com.example.bai1.controller;
 
+import com.example.bai1.dto.IPlayerDto;
 import com.example.bai1.dto.PlayerDto;
 import com.example.bai1.model.Player;
 import com.example.bai1.model.Position;
@@ -36,38 +37,33 @@ public class PlayerController {
     @Autowired
     private ITeamService teamService;
 
-    //    @GetMapping("")
-//    public String showList(Model model){
-//        List<Player> playerList = playerService.findAll();
-//        model.addAttribute("playerList",playerList);
-//        return "/list";
-//    }
+
     @ModelAttribute("teamList")
-    public List<Team> teamList(){
-       return teamService.findAll();
+    public List<Team> teamList() {
+        return teamService.findAll();
     }
 
     @GetMapping("")
     public String showList(@RequestParam(defaultValue = "0", required = false) int page,
                            @RequestParam(defaultValue = "") String nameSearch,
-                           @RequestParam(defaultValue = "2", required = false) int size,
+                           @RequestParam(defaultValue = "5", required = false) int size,
                            @RequestParam(defaultValue = "1990-01-01", required = false) String dayStart,
                            @RequestParam(defaultValue = "", required = false) String dayEnd,
-                           @RequestParam(defaultValue = "",required = false) String teamSearch,
+                           @RequestParam(defaultValue = "", required = false) String teamSearch,
                            @ModelAttribute Player player,
                            Model model) {
         if (Objects.equals(dayEnd, "")) {
             dayEnd = String.valueOf(LocalDate.now());
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
-        Page<Player> playerPage = playerService.searchByName(pageable, nameSearch, dayStart, dayEnd, teamSearch);
+        Page<IPlayerDto> playerPage = playerService.searchByName(pageable, nameSearch, dayStart, dayEnd, teamSearch);
         model.addAttribute("playerPage", playerPage);
         model.addAttribute("nameSearch", nameSearch);
         model.addAttribute("size", size);
         model.addAttribute("dayStart", dayStart);
         model.addAttribute("dayEnd", dayEnd);
         model.addAttribute("player", player);
-        model.addAttribute("teamSearch",teamSearch);
+        model.addAttribute("teamSearch", teamSearch);
         return "list";
     }
 
@@ -86,15 +82,7 @@ public class PlayerController {
         return "/detail";
     }
 
-    //    @GetMapping("/create")
-//    public String showCreate(Model model) {
-//        List<Position> positionList = positionService.findAll();
-//        List<Team> teamList = teamService.findAll();
-//        model.addAttribute("positionList", positionList);
-//        model.addAttribute("player", new Player());
-//        model.addAttribute("teamList", teamList);
-//        return "/create";
-//    }
+
     @GetMapping("/create")
     public String showCreate(Model model) {
         List<Position> positionList = positionService.findAll();
@@ -105,14 +93,7 @@ public class PlayerController {
         return "/create";
     }
 
-//        @PostMapping("/save")
-//    public String save(@ModelAttribute Player player, RedirectAttributes redirectAttributes, Model model) {
-//        player.setStatus(true);
-//        playerService.save(player);
-//        redirectAttributes.addFlashAttribute("msg", "Add New Player Success");
-//        model.addAttribute("player", player);
-//        return "redirect:/player";
-//    }
+
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute PlayerDto playerDto,
                        RedirectAttributes redirectAttributes,
@@ -127,10 +108,11 @@ public class PlayerController {
             return "create";
         }
         Player player = new Player();
-        BeanUtils.copyProperties(playerDto,player);
+        BeanUtils.copyProperties(playerDto, player);
         player.setStatus(true);
+        player.setAction(true);
         playerService.save(player);
-        redirectAttributes.addFlashAttribute("msg","Add New Player");
+        redirectAttributes.addFlashAttribute("msg", "Add New Player");
         return "redirect:/player";
     }
 
@@ -151,6 +133,23 @@ public class PlayerController {
         player.setStatus(true);
         playerService.saveEdit(player.getId(), player);
         redirectAttributes.addFlashAttribute("msg", "Edit Player Success");
+        return "redirect:/player";
+    }
+
+    @GetMapping("/active")
+    public String playerActive(@RequestParam int id, RedirectAttributes redirectAttributes) {
+
+            Player player = playerService.findId(id);
+            playerService.active(player);
+            redirectAttributes.addFlashAttribute("msg", "Active Player Success");
+            return "redirect:/player";
+    }
+
+    @GetMapping("/reserve")
+    public String playerReserve(@RequestParam int id, RedirectAttributes redirectAttributes) {
+        Player player = playerService.findId(id);
+        playerService.reserve(player);
+        redirectAttributes.addFlashAttribute("msg", "Player Has Been Reserve");
         return "redirect:/player";
     }
 

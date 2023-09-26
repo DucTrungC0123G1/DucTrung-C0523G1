@@ -106,8 +106,6 @@ public class PlayerDto implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PlayerDto playerDto = (PlayerDto) target;
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        //convert String to LocalDate
         LocalDate localDate = LocalDate.parse(playerDto.getBirthDay());
         LocalDate dateNow = LocalDate.now();
         LocalDate birthDay = LocalDate.ofEpochDay(localDate.toEpochDay());

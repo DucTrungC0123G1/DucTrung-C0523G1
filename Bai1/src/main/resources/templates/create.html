@@ -61,10 +61,12 @@
                     </th:block>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="description">LINK AVATAR PLAYER<span style="color: red">*</span>:</label>
-                <textarea type="text" class="form-control" id="description" th:field="*{picture}"></textarea>
+            <div id="image-preview-container1"><img style="margin: 2%; width: 7rem; height: 10rem" th:src="*{picture}"
+                                                    alt="Player's avatar">
+                <input type="hidden" th:value="*{picture}">
             </div>
+            <input type="file" id="upload-file" multiple accept=".jpg, .jpeg, .png" onchange="limitFiles(this, 1)">
+            <input name="imageAvatar" type="hidden" id="imageAvatar" th:field="*{picture}">
             <div class="form-group mb-0">
                 <input type="submit" value="SAVE" class="btn btn-primary px-3">
             </div>
@@ -73,6 +75,42 @@
 </div>
 <div th:replace="landing_page::footer">
 </div>
+<script>
+    function limitFiles(input, maxFiles) {
+        if (input.files.length > maxFiles) {
+            alert(`Chỉ được chọn đúng ${maxFiles} tệp.`);
+            input.value = ""; // Xóa tệp đã chọn nếu vượt quá giới hạn
+        }
+    }
+
+    document.getElementById("upload-file").addEventListener("change", function (e) {
+        const container = document.getElementById("image-preview-container1");
+        container.innerHTML = "";
+
+        const maxFiles = 1;
+        const files = e.target.files;
+
+        if (files.length !== maxFiles) {
+            alert(`Bạn phải chọn đúng ${maxFiles} tệp.`);
+            e.target.value = "";
+            return;
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.width = "6rem"
+            img.style.height = "6rem"
+            img.style.margin = "7px";
+            container.appendChild(img);
+        }
+    });
+</script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+<script type="module" src="/configuration-firebase.js"></script>
+<script type="module" src="/upload-file.js"></script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

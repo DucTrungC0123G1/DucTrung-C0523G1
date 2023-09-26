@@ -1,7 +1,9 @@
 package com.example.bai1.service;
 
+import com.example.bai1.dto.IPlayerDto;
 import com.example.bai1.dto.PlayerDto;
 import com.example.bai1.model.Player;
+import com.example.bai1.model.Team;
 import com.example.bai1.repository.IPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,7 +42,24 @@ public class PlayerService implements IPlayerService{
     }
 
     @Override
-    public Page<Player> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd, String teamSearch) {
-        return playerRepository.findPlayerByNameContaining(pageable,"%"+ nameSearch +"%",dayStart,dayEnd,"%" +teamSearch+ "%");
+    public Page<IPlayerDto> searchByName(Pageable pageable, String nameSearch, String dayStart, String dayEnd, String teamSearch) {
+        return playerRepository.findPlayerByNameContaining(pageable,"%"+ nameSearch +"%",dayStart,dayEnd,"%"+teamSearch+"%");
     }
+
+    @Override
+    public void active(Player player) {
+        playerRepository.playerActive(player);
+    }
+
+    @Override
+    public void reserve(Player player) {
+        playerRepository.playerReserve(player);
+    }
+
+    @Override
+    public List<Player> checkLimitPlayer(int id) {
+        return playerRepository.checkLimit(id);
+    }
+
+
 }
