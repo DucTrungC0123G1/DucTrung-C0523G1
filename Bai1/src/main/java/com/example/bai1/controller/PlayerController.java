@@ -138,7 +138,6 @@ public class PlayerController {
 
     @GetMapping("/active")
     public String playerActive(@RequestParam int id, RedirectAttributes redirectAttributes) {
-
             Player player = playerService.findId(id);
             playerService.active(player);
             redirectAttributes.addFlashAttribute("msg", "Active Player Success");
