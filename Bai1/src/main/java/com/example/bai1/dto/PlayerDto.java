@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class PlayerDto implements Validator {
     private String codePlayer;
@@ -134,5 +135,18 @@ public class PlayerDto implements Validator {
         } else if (!playerDto.getExp().matches("^[1-9]{1,2}$")) {
             errors.rejectValue("exp",null,"Experience is a Integer");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerDto playerDto = (PlayerDto) o;
+        return status == playerDto.status && Objects.equals(codePlayer, playerDto.codePlayer) && Objects.equals(name, playerDto.name) && Objects.equals(birthDay, playerDto.birthDay) && Objects.equals(exp, playerDto.exp) && Objects.equals(picture, playerDto.picture) && Objects.equals(position, playerDto.position) && Objects.equals(team, playerDto.team);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codePlayer, name, birthDay, exp, picture, status, position, team);
     }
 }

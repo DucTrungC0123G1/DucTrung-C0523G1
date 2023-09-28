@@ -32,6 +32,13 @@
                     <p class="card-text" th:text="${player.exp}"></p><br/>
                     <p class="card-text" th:text="${player.birthDay}"></p><br/>
                     <p class="card-text" th:text="${player.team.name}"></p><br/>
+                    <p class="card-text">
+                        <a th:href="@{/player/add/__${player.id}__}">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </a>
+                    </p>
                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                 </div>
             </div>

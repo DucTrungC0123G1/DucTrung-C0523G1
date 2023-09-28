@@ -1,6 +1,7 @@
 package com.example.bai1.controller;
 
 import com.example.bai1.dto.IPlayerDto;
+import com.example.bai1.dto.LikeDto;
 import com.example.bai1.dto.PlayerDto;
 import com.example.bai1.model.Player;
 import com.example.bai1.model.Position;
@@ -29,6 +30,7 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping("/player")
+@SessionAttributes("like")
 public class PlayerController {
     @Autowired
     private IPlayerService playerService;
@@ -41,6 +43,23 @@ public class PlayerController {
     @ModelAttribute("teamList")
     public List<Team> teamList() {
         return teamService.findAll();
+    }
+
+    @ModelAttribute("like")
+    public LikeDto initLikeDto() {
+        return new LikeDto();
+    }
+
+    @GetMapping("/add/{id}")
+    public String addToPlayerLike(@PathVariable int id,
+                                  @SessionAttribute(value = "like", required = false) LikeDto likeDto) {
+        Player player = playerService.findId(id);
+        if (player != null) {
+            PlayerDto playerDto = new PlayerDto();
+            BeanUtils.copyProperties(player, playerDto);
+            likeDto.addPlayerLike(playerDto);
+        }
+        return "redirect:/like";
     }
 
     @GetMapping("")
@@ -64,7 +83,7 @@ public class PlayerController {
         model.addAttribute("dayEnd", dayEnd);
         model.addAttribute("player", player);
         model.addAttribute("teamSearch", teamSearch);
-        return "list";
+        return "list_card";
     }
 
     @GetMapping("/delete")
@@ -138,10 +157,10 @@ public class PlayerController {
 
     @GetMapping("/active")
     public String playerActive(@RequestParam int id, RedirectAttributes redirectAttributes) {
-            Player player = playerService.findId(id);
-            playerService.active(player);
-            redirectAttributes.addFlashAttribute("msg", "Active Player Success");
-            return "redirect:/player";
+        Player player = playerService.findId(id);
+        playerService.active(player);
+        redirectAttributes.addFlashAttribute("msg", "Active Player Success");
+        return "redirect:/player";
     }
 
     @GetMapping("/reserve")
