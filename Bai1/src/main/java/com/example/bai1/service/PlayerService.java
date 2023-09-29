@@ -22,6 +22,11 @@ public class PlayerService implements IPlayerService{
 //    }
 
     @Override
+    public List<Player> findAll() {
+        return playerRepository.findAll();
+    }
+
+    @Override
     public Player findId(int id) {
         return playerRepository.findById(id).orElse(null);
     }
@@ -59,6 +64,11 @@ public class PlayerService implements IPlayerService{
     @Override
     public List<Player> checkLimitPlayer(int id) {
         return playerRepository.checkLimit(id);
+    }
+
+    @Override
+    public void delete(int id) {
+    playerRepository.deleteById(id);
     }
 
 

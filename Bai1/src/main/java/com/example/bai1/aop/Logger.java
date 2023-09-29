@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Component
 public class Logger {
     @Autowired
-    IPlayerService playerService;
+    private IPlayerService playerService;
     private static LocalDate time = LocalDate.now();
     private static int count =0;
     @AfterReturning("execution(* com.example.bai1.controller.PlayerController.playerActive(..))")

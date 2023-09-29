@@ -1,5 +1,7 @@
 package com.example.bai1.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String position;
+    @JsonBackReference
     @OneToMany(mappedBy = "position")
     private Set<Player> playerSet;
 
