@@ -71,5 +71,10 @@ public class PlayerService implements IPlayerService{
     playerRepository.deleteById(id);
     }
 
+//    @Override
+//    public Page<Player> findAll(Pageable pageable) {
+//        return playerRepository.findAll(pageable);
+//    }
+
 
 }

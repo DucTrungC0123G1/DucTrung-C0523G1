@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IPlayerService {
-    List<Player> findAll();
+    
 
     Player findId(int id);
 
@@ -31,4 +31,7 @@ public interface IPlayerService {
 
 
     void delete(int id);
+
+
+    List<Player> findAll();
 }

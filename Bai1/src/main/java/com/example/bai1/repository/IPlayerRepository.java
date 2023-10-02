@@ -58,4 +58,5 @@ public interface IPlayerRepository extends JpaRepository<Player,Integer> {
 
     @Query(value = "select * from player where team_id :id",nativeQuery = true)
     List <Player> checkLimit(@Param("id") int id);
+
 }

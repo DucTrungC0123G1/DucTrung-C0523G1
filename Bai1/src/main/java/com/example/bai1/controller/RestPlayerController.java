@@ -5,6 +5,9 @@ import com.example.bai1.model.Player;
 import com.example.bai1.service.IPlayerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/players")
+@CrossOrigin("*")
+@RequestMapping("/api/players")
 public class RestPlayerController {
     @Autowired
     private IPlayerService playerService;
@@ -25,13 +29,14 @@ public class RestPlayerController {
         return new ResponseEntity<>(playerList,HttpStatus.OK);
     }
 
-
     @PostMapping("")
     public ResponseEntity<?> save (@RequestBody PlayerDto playerDto){
         if (playerDto==null){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Player player = new Player();
+        player.setStatus(true);
+        player.setAction(true);
         BeanUtils.copyProperties(playerDto,player);
         playerService.save(player);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -44,7 +49,7 @@ public class RestPlayerController {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         playerService.delete(id);
-        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return  new ResponseEntity<>(HttpStatus.OK);
     }
 
 
@@ -57,7 +62,7 @@ public class RestPlayerController {
         }
         BeanUtils.copyProperties(playerDto,player);
             playerService.save(player);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
